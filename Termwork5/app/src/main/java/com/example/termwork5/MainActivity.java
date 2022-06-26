@@ -1,38 +1,40 @@
 package com.example.termwork5;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import org.w3c.dom.Text;
+import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
-    TextView lblCounter;
-    Button btnStart, btnStop;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    TextView lblcounter;
+    Button btnStart, btnstop;
     int counter=0;
     boolean running=false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        lblCounter=(TextView) findViewById(R.id.textView3);
+        lblcounter=(TextView) findViewById(R.id.textView3);
         btnStart=(Button) findViewById(R.id.button);
-        btnStop=(Button) findViewById(R.id.button2);
-        btnStop.setOnClickListener((View.OnClickListener) this);
-        btnStart.setOnClickListener((View.OnClickListener) this);
+        btnstop=(Button) findViewById(R.id.button2);
+        btnstop.setOnClickListener(this);
+        btnStart.setOnClickListener(this);
     }
     public void onClick(View v)
     {
-        if(v.equals(btnStart))
+        if (v.equals(btnStart))
         {
             counter=0;
             running=true;
-            new MyCounter().Start();
+            new MyCounter().start();
+
         }
-        else if(v.equals(btnStop))
+        else if(v.equals(btnstop))
         {
             running=false;
         }
@@ -41,24 +43,20 @@ public class MainActivity extends AppCompatActivity {
     {
         public void handleMessage(Message m)
         {
-            lblCounter.setText(String.valueOf(m.what));
+            lblcounter.setText(String.valueOf(m.what));
         }
     };
-    class Mycounter extends Thread{
+    class MyCounter extends Thread{
         public void run()
         {
             while(running)
             {
                 counter++;
                 handler.sendEmptyMessage(counter);
-                try{Thread.sleep(1000);}
-                catch (Exception e){}
-            }
-        }
-    }
+                try { Thread.sleep(1000);}
+                catch (Exception e) { }
 
-    private class MyCounter {
-        public void Start() {
+            }
         }
     }
 }
